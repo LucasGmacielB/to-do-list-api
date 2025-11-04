@@ -14,7 +14,14 @@ app.use(morgan("dev"));
 
 app.use("/api/v1/tasks", taskRoutes);
 
-sequelize.sync().then(() => console.log("DB connected"));
+sequelize.sync().then(() => {
+  console.log("DB synced ✅");
+  app.listen(process.env.PORT || 3000, () =>
+    console.log(`API rodando na porta ${process.env.PORT || 3000}`)
+  );
+}).catch(err => {
+  console.error("Erro ao sincronizar DB ❌", err);
+});
 
 app.listen(process.env.PORT, () =>
   console.log(`API rodando na porta ${process.env.PORT}`)
